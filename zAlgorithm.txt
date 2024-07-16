@@ -1,0 +1,15 @@
+// Algorithm of Setup Resend Email with nextjs 
+
+// code should effectively handles both scenarios of registering a new user and updating an existing but unverified user account with a new password and verification code 
+ 
+// IF existingUserByEmail       Exists    THEN 
+// IF existingUserByEmail.isVerified      THEN
+         success:false,
+    ELSE 
+        // Save the updated user
+    ELSE IF 
+    ELSE 
+        // Create a new user with the provided details
+        // Save the new user
+    END IF
+
