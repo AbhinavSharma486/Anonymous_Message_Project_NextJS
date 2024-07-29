@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import Link from 'next/link';
 import { ApiResponse } from '@/types/ApiResponse';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useDebounceCallback } from 'usehooks-ts';
 
 import { Button } from '@/components/ui/button';
@@ -44,30 +44,28 @@ const Page = () => {
     },
   });
 
-  const checkUsernameUnique = useCallback(async () => {
-    if (username) {
-      setIsCheckingUsername(true);
-      setUsernameMessage(''); // Reset message
-      try {
-        const response = await axios.get<ApiResponse>(
-          `/api/check-username-unique?username=${username}`
-        );
-        const message = response.data.message;
-        setUsernameMessage(message);
-      } catch (error) {
-        const axiosError = error as AxiosError<ApiResponse>;
-        setUsernameMessage(
-          axiosError.response?.data.message ?? 'Error checking username'
-        );
-      } finally {
-        setIsCheckingUsername(false);
-      }
-    }
-  }, [username]);
-
   useEffect(() => {
+    const checkUsernameUnique = async () => {
+      if (username) {
+        setIsCheckingUsername(true);
+        setUsernameMessage(''); // Reset message
+        try {
+          const response = await axios.get<ApiResponse>(
+            `/api/check-username-unique?username=${username}`
+          );
+          setUsernameMessage(response.data.message);
+        } catch (error) {
+          const axiosError = error as AxiosError<ApiResponse>;
+          setUsernameMessage(
+            axiosError.response?.data.message ?? 'Error checking username'
+          );
+        } finally {
+          setIsCheckingUsername(false);
+        }
+      }
+    };
     checkUsernameUnique();
-  }, [username, checkUsernameUnique]);
+  }, [username]);
 
 
 
